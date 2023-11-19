@@ -24,7 +24,7 @@ export default function TabLayout() {
   return (
     <Drawer
       screenOptions={{
-        headerTintColor: "white",
+        headerTintColor: session && session.user ? "white" : "black",
       }}
     >
       <Drawer.Screen

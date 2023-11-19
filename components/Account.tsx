@@ -83,22 +83,22 @@ export default function Account({ session }: { session: Session }) {
         <Input className='text-white' label="Email" value={session?.user?.email} disabled />
       </View>
       <View style={styles.verticallySpaced}>
-        <Input className='text-white' label="Username" value={username || ''} onChangeText={(text) => setUsername(text)} />
+        <Input className='text-white' label="Benutzername" value={username || ''} onChangeText={(text) => setUsername(text)} />
       </View>
       <View style={styles.verticallySpaced}>
-        <Input className='text-white' style={[styles.text]} label="Full Name" value={full_name || ''} onChangeText={(text) => setFullName(text)} />
+        <Input className='text-white' style={[styles.text]} label="Ganzer Name" value={full_name || ''} onChangeText={(text) => setFullName(text)} />
       </View>
 
       <View style={[styles.verticallySpaced, styles.mt20]}>
         <Button
-          title={loading ? 'Loading ...' : 'Update'}
+          title={loading ? 'Loading ...' : 'Profil Updaten'}
           onPress={() => updateProfile({ username, full_name, avatar_url: avatarUrl })}
           disabled={loading}
         />
       </View>
 
       <View style={styles.verticallySpaced}>
-        <Button title="Sign Out" onPress={() => supabase.auth.signOut()} />
+        <Button title="Ausloggen" onPress={() => supabase.auth.signOut()} />
       </View>
     </View>
   )

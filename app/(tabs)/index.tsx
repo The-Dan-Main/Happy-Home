@@ -8,6 +8,7 @@ import { Text } from "react-native-elements";
 
 export default function App() {
   const [session, setSession] = useState<Session | null>(null);
+  const [user, setUser] = useState<Session | null>(null);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -17,13 +18,25 @@ export default function App() {
     supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
     });
+    if (session && session.user) {
+      const fetchUser = async (session: any) => {
+        const { data, error } = await supabase
+          .from("profiles")
+          .select()
+          .eq("id", session.user?.id);
+        // console.log("data", data);
+        // console.log("error", error);
+      };
+      fetchUser(session);
+    }
+    // console.log("session", session);
   }, []);
 
   return (
     <View className=" flex-1 items-center justify-center ">
       {session && session.user ? (
         <>
-          <Text className=" text-xl text-white font-bold">Home Screen</Text>
+          <Text className="text-xl text-white font-bold">Home Screen</Text>
           <View
             className=" my-8 h-[1px] w-[80%]"
             lightColor="#eee"
