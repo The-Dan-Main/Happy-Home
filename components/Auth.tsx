@@ -3,23 +3,58 @@ import { Alert, StyleSheet, View, Text } from "react-native";
 import { supabase } from "../lib/supabase";
 import { Button, Image, Input } from "react-native-elements";
 
+import { useAppDispatch, useAppSelector } from "../lib/hooks";
+import { applyUser } from "../lib/stores/userSlice";
+
 export default function Auth() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.user);
+  // const message = ""
+
   async function signInWithEmail() {
+    if (email === "" || password === "") {
+      Alert.alert("Bitte Email und Passwort eingeben!");
+      return;
+    }
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email: email,
       password: password,
     });
+    if (error) {
+      Alert.alert(error.message);
+    }
+    // console.log("userData", data.user?.id);
 
+    const userData = await supabase
+      .from("profiles")
+      .select()
+      .eq("id", data.user?.id as any);
+    // console.log("userData", userData);
+
+    dispatch(
+      applyUser({
+        id: userData.data![0].id,
+        updated_at: userData.data![0].updated_at,
+        username: userData.data![0].username,
+        full_name: userData.data![0].full_name,
+        household: userData.data![0].household,
+        avatar_url: null,
+      })
+    );
     if (error) Alert.alert(error.message);
     setLoading(false);
   }
 
   async function signUpWithEmail() {
+    if (email === "" || password === "") {
+      Alert.alert("Bitte Email und Passwort eingeben!");
+      return;
+    }
     setLoading(true);
     const {
       data: { session },
@@ -28,7 +63,7 @@ export default function Auth() {
       email: email,
       password: password,
     });
-
+    console.log("Session", session);
     if (error) Alert.alert(error.message);
     if (!session)
       Alert.alert("Please check your inbox for email verification!");
@@ -84,3 +119,29 @@ export default function Auth() {
     </View>
   );
 }
+
+let asd = {
+  app_metadata: { provider: "email", providers: ["email"] },
+  aud: "authenticated",
+  confirmed_at: "2023-11-19T13:20:45.4414Z",
+  created_at: "2023-11-19T13:20:45.435381Z",
+  email: "dan_weber_main@outlook.com",
+  email_confirmed_at: "2023-11-19T13:20:45.4414Z",
+  id: "2b722827-8598-48de-bdc3-92a60f349b12",
+  identities: [
+    {
+      created_at: "2023-11-19T13:20:45.439999Z",
+      id: "2b722827-8598-48de-bdc3-92a60f349b12",
+      identity_data: [Object],
+      last_sign_in_at: "2023-11-19T13:20:45.439955Z",
+      provider: "email",
+      updated_at: "2023-11-19T13:20:45.439999Z",
+      user_id: "2b722827-8598-48de-bdc3-92a60f349b12",
+    },
+  ],
+  last_sign_in_at: "2023-11-24T21:48:02.996212224Z",
+  phone: "",
+  role: "authenticated",
+  updated_at: "2023-11-24T21:48:02.997742Z",
+  user_metadata: {},
+};

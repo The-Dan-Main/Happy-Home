@@ -6,6 +6,7 @@ import Auth from '../../components/Auth'
 import Account from '../../components/Account'
 import { Session } from '@supabase/supabase-js'
 import { Text } from 'react-native-elements';
+import React from 'react';
 
 export default function App() {
   const [session, setSession] = useState<Session | null>(null)
