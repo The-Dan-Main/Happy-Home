@@ -24,19 +24,28 @@ export default function App() {
           .from("profiles")
           .select()
           .eq("id", session.user?.id);
-        // console.log("data", data);
+        console.log("data", data);
         // console.log("error", error);
       };
       fetchUser(session);
+      const fetchHousehold = async (session: any) => {
+        const { data, error } = await supabase
+          .from("profiles")
+          .select()
+          .eq("id", session.user?.id);
+        console.log("data", data);
+        // console.log("error", error);
+      };
+      fetchHousehold(session);
     }
     // console.log("session", session);
   }, []);
 
   return (
-    <View className=" flex-1 items-center justify-center ">
+    <View className="items-center justify-center flex-1 ">
       {session && session.user ? (
         <>
-          <Text className="text-xl text-white font-bold">Home Screen</Text>
+          <Text className="text-xl font-bold text-white">Home Screen</Text>
           <View
             className=" my-8 h-[1px] w-[80%]"
             lightColor="#eee"

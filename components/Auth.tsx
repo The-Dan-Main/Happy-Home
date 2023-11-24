@@ -36,12 +36,12 @@ export default function Auth() {
   }
 
   return (
-    <View className="w-full h-full mt-11 p-3 flex items-center">
+    <View className="flex items-center w-full h-full p-3 mt-11">
       <Image
         className="h-48 w-48 object-contain rounded-[50px]"
         source={require("../assets/images/Logo.png")}
       />
-      <Text className=" text-4xl mb-12 text-white font-bold">HappyHome</Text>
+      <Text className="mb-12 text-4xl font-bold text-white ">HappyHome</Text>
       <View>
         <View className="py-4 w-[80vw]">
           <Input
@@ -51,6 +51,7 @@ export default function Auth() {
             value={email}
             placeholder="email@address.com"
             autoCapitalize={"none"}
+            className="text-white"
           />
         </View>
         <View className="py-4 w-[80vw]">
@@ -62,6 +63,7 @@ export default function Auth() {
             secureTextEntry={true}
             placeholder="Password"
             autoCapitalize={"none"}
+            className="text-white"
           />
         </View>
         <View className="py-4 w-[80vw]">
