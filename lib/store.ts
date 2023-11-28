@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import  userReducer  from './stores/userSlice';
+import  menuReducer  from './stores/menuSlice';
 
 export const store = configureStore({
   reducer: {
     // posts: postsReducer,
     // comments: commentsReducer,
     user: userReducer,
+    menu: menuReducer
   }
 })
 
