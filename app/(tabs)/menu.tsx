@@ -16,6 +16,7 @@ export default () => {
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("Vorspeise");
   const [categoryIndex, setCategoryIndex] = useState(0);
+  const [placeholder, setPlaceholder] = useState("Titel*");
 
   const id = useAppSelector((state) => state.user.id);
   const household = useAppSelector((state) => state.user.household);
@@ -29,6 +30,9 @@ export default () => {
         <View key={item.id} className="w-5/6 p-4 m-4 bg-slate-800 rounded-2xl">
           <Text className="text-xl text-white">{item.title}</Text>
           <Text className="text-sm text-white">{item.description}</Text>
+          {/* <View > */}
+            <Text className="absolute top-0 text-right text-slate-400 right-12">{item.category}</Text>
+          {/* </View> */}
           <View className="absolute bg-transparent right-3 top-1">
             <Pressable
               className="bg-transparent"
@@ -66,7 +70,7 @@ export default () => {
           <Input
             onChangeText={(text) => setTitle(text)}
             className="p-4 text-white"
-            placeholder="Titel*"
+            placeholder={placeholder}
             value={title}
           />
           <Input
@@ -75,20 +79,24 @@ export default () => {
             placeholder="Beschreibung"
             value={description}
           />
-          <View className="absolute top-0 right-0 p-3 text-4xl border-l-2 border-white">
+          <View className="absolute top-0 right-0 p-3 text-4xl border-l-2 border-white ${title !== '' ? '' : 'placeholder:text-red-400' }">
             <Pressable
               className="text-white rounded-2xl"
-              onPress={() =>
-                dispatch(
-                  addItemAsync({
-                    title: title,
-                    description: description,
-                    initiator: id,
-                    household: household,
-                    category: category,
-                  })
-                )
-              }
+              onPress={() => {
+                if (title !== "") {
+                  dispatch(
+                    addItemAsync({
+                      title: title,
+                      description: description,
+                      initiator: id,
+                      household: household,
+                      category: category,
+                    })
+                  );
+                } else {
+                  setPlaceholder("Cannot be empty");
+                }
+              }}
             >
               <Text className="p-6 text-white bg-slate-800 rounded-2xl">
                 Hinzufügen

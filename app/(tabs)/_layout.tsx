@@ -2,6 +2,7 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Link, Tabs } from "expo-router";
 import { Pressable, useColorScheme } from "react-native";
 import { Drawer } from "expo-router/drawer";
+import React from "react";
 
 import Colors from "../../constants/Colors";
 import { useEffect, useState } from "react";
@@ -59,7 +60,7 @@ export default function TabLayout() {
       />
 
       <Drawer.Screen
-        name="finance"
+        name="(finance)"
         options={{
           drawerLabel: "Finanzen",
           title: "Finanzen",

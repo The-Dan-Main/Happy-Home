@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
 import { supabase } from "../supabase";
-import { useAppSelector } from "../hooks";
 
 // Define a type for the slice state
 export interface UserState {
@@ -16,22 +15,22 @@ const initialState: UserState = {
 };
 
 export const addItemAsync = createAsyncThunk(
-  "menu/addItem",
+  "finance/addItem",
   async (item: {}) => {
-    // console.log("Item:", item);
+    console.log("Item:", item);
     const { data, error } = await supabase
-      .from("menu_entries")
+      .from("finance_entries")
       .insert(item)
       .select();
     // console.log("Data:", data);
-    // console.log("error:", error);
+    console.log("error:", error);
 
     return data;
   }
 );
 
-export const fetchItemsAsync = createAsyncThunk("menu/fetchItems", async () => {
-  // console.log("Fetching Items");
+export const fetchItemsAsync = createAsyncThunk("finance/fetchItems", async () => {
+  console.log("Fetching Items");
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -39,42 +38,42 @@ export const fetchItemsAsync = createAsyncThunk("menu/fetchItems", async () => {
     .from("profiles")
     .select()
     .eq("id", user?.id as any);
-  // console.log("userData:", userData);
+//   console.log("userData:", userData);
   const { data, error } = await supabase
-    .from("menu_entries")
+    .from("finance_entries")
     .select()
     .eq("household", userData.data![0].household);
-  // console.log("Data:", data);
-  // console.log("error:", error);
+//   console.log("Data:", data);
+//   console.log("error:", error);
 
   return data;
 });
 
 export const updateItem = createAsyncThunk("", async (item: {}) => {
-  // console.log("Item:", item);s
+  console.log("Item:", item);
 });
 
 export const deleteItemAsync = createAsyncThunk("", async (id: string) => {
   // console.log("Item:", id);
   const { data, error } = await supabase
-    .from("menu_entries")
+    .from("finance_entries")
     .delete()
     .eq("id", id)
     .select();
 
   // console.log("Data:", data);
-  // console.log("error:", error);
+  console.log("error:", error);
 
   return data![0].id;
 });
 
-export const menuSlice = createSlice({
-  name: "menu",
+export const financeSlice = createSlice({
+  name: "finance",
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    showMenuItems(state) {
-      // console.log("Current state:", state);
+    showFinanceItems(state) {
+      console.log("Current state:", state);
     },
   },
   extraReducers: (builder) => {
@@ -84,7 +83,7 @@ export const menuSlice = createSlice({
         state.status = "loading";
       })
       .addCase(addItemAsync.fulfilled, (state, action) => {
-        // console.log("Adding now to state:", action.payload);
+        console.log("Adding now to state:", action.payload);
 
         state.status = "idle";
         state.items.push(action.payload![0]);
@@ -98,7 +97,7 @@ export const menuSlice = createSlice({
         state.items = [];
       })
       .addCase(fetchItemsAsync.fulfilled, (state, action) => {
-        // console.log("Fetched Items:", action.payload);
+        console.log("Fetched Items:", action.payload);
         action.payload!.forEach((item: any) => {
           state.items.push(item);
         });
@@ -112,17 +111,17 @@ export const menuSlice = createSlice({
         state.status = "loading";
       })
       .addCase(deleteItemAsync.fulfilled, (state: any, action: any) => {
-        // console.log("Fetched Items:", action.payload);
+        console.log("Fetched Items:", action.payload);
         const oldState = state.items;
         state.items = [];
         oldState.forEach((item: any) => {
-          // console.log("Item:", item);
-          // console.log("is equal:",item.id !== action.payload);
+          console.log("Item:", item);
+          console.log("is equal:",item.id !== action.payload);
           
           
           if (item.id !== action.payload) state.items.push(item);
         });
-        // console.log("New State:", state.items);
+        console.log("New State:", state.items);
         
         state.status = "idle";
       })
@@ -132,9 +131,9 @@ export const menuSlice = createSlice({
   },
 });
 
-export const { showMenuItems } = menuSlice.actions;
+export const { showFinanceItems } = financeSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
-export const menuItems = (state: RootState) => state.menu;
+export const financeItems = (state: RootState) => state.finance;
 
-export default menuSlice.reducer;
+export default financeSlice.reducer;

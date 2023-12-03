@@ -39,12 +39,12 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     showUser(state) {
-      console.log("Current state:", state);
+      // console.log("Current state:", state);
       return state;
     },
     applyUser: (state, action: PayloadAction<UserState>) => {
-      console.log("applyUser");
-      console.log(action);
+      // console.log("applyUser");
+      // console.log(action);
 
       // Mutieren Sie jedes Feld im Zustand direkt
       state.id = action.payload.id;
@@ -54,7 +54,7 @@ export const userSlice = createSlice({
       state.household = action.payload.household;
       state.avatar_url = action.payload.avatar_url;
 
-      console.log("New State:", state);
+      // console.log("New State:", state);
     },
   },
   extraReducers: (builder) => {
@@ -63,7 +63,7 @@ export const userSlice = createSlice({
         // state.status = "loading";
       })
       .addCase(fetchUserAsync.fulfilled, (state, action) => {
-        console.log("Fetched user:", action.payload);
+        // console.log("Fetched user:", action.payload);
 
         state.id = action.payload![0].id;
         state.updated_at = action.payload![0].updated_at;

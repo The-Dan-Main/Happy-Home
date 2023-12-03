@@ -1,15 +1,17 @@
-import { configureStore } from '@reduxjs/toolkit'
-import  userReducer  from './stores/userSlice';
-import  menuReducer  from './stores/menuSlice';
+import { configureStore } from "@reduxjs/toolkit";
+import userReducer from "./stores/userSlice";
+import menuReducer from "./stores/menuSlice";
+import fincanceReducer from "./stores/financeSlice";
 
 export const store = configureStore({
   reducer: {
     // posts: postsReducer,
     // comments: commentsReducer,
     user: userReducer,
-    menu: menuReducer
-  }
-})
+    menu: menuReducer,
+    finance: fincanceReducer,
+  },
+});
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 // export type RootState = ReturnType<typeof store.getState>
